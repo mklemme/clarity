@@ -1,0 +1,35 @@
+@import "../utils/variables.clarity";
+@import "../utils/mixins.clarity";
+@import "../utils/helpers.clarity";
+
+$clr-tree-node-caret-size: $clr_baselineRem_1;
+
+:host {
+    //Positioning
+    position: relative;
+
+    //Display
+    display: block;
+    padding-left: $clr_baselineRem_1 + $clr_baselineRem_0_25;
+
+    //Others
+}
+
+.clr-tree-node-caret{
+    //Positioning
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    //Display
+    display: inline-block;
+    height: $clr-tree-node-caret-size;
+    width: $clr-tree-node-caret-size;
+    margin: 0;
+    padding: 0;
+
+    //Others
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}

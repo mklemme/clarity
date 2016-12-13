@@ -1,0 +1,14 @@
+<!--
+  ~ Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="clr-tree-node-caret" (click)="toggleCollapse()">
+    <clr-icon shape="caret" [dir]="caretDirection" size="16"></clr-icon>
+</button>
+<ng-content></ng-content>
+<!-- FIXME: remove this string concatenation when boolean states are supported -->
+<div [@collapse]="''+collapsed" class="clr-tree-node-children">
+    <ng-content select="clr-tree-node"></ng-content>
+</div>
