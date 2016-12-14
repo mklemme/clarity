@@ -5,16 +5,21 @@
  */
 import {ModuleWithProviders} from "@angular/core/src/metadata/ng_module";
 import {Routes, RouterModule} from "@angular/router";
+
 import {TreeViewDemo} from "./tree-view.demo";
 import {TreeViewBasicStructureDemo} from "./basic-structure/tree-view-basic";
+import {TreeNodeExpandableDemo} from "./tree-node-expandable/tree-node-expandable";
+import {TreeViewDynamicDemo} from "./tree-view-dynamic/tree-view-dynamic";
 
 const ROUTES: Routes = [
     {
         path: "",
         component: TreeViewDemo,
         children: [
-            { path: "", redirectTo: "sizes", pathMatch: "full" },
-            { path: "basic-structure", component: TreeViewBasicStructureDemo }
+            { path: "", redirectTo: "basic-structure", pathMatch: "full" },
+            { path: "basic-structure", component: TreeViewBasicStructureDemo },
+            { path: "tree-node-expandable", component: TreeNodeExpandableDemo },
+            { path: "tree-view-dynamic", component: TreeViewDynamicDemo }
         ]
     }
 ];

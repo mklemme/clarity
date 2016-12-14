@@ -26,6 +26,7 @@ export class TreeNode implements AfterContentInit {
     @ContentChildren(TreeNode) childNodes: QueryList<TreeNode>;
 
     @Input("clrTreeNodeExpanded") expanded = false;
+    @Input("clrTreeNodeExpandable") isExpandable = false;
 
     hasChildren: boolean = false;
     caretDirection: string = this.expanded ? "down" : "right";
@@ -46,7 +47,7 @@ export class TreeNode implements AfterContentInit {
     treeNodeHasChildren(): boolean {
         //Since @ContentChildren registers itself as a child too
         //we check for length > 1 instead of 0
-        if(this.childNodes.length > 1) {
+        if (this.childNodes.length > 1) {
             return true;
         }
         return false;

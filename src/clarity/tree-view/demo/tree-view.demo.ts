@@ -14,6 +14,8 @@ import {Component} from "@angular/core";
 
         <ul>
             <li><a [routerLink]="['./basic-structure']">Basic Structure</a></li>
+            <li><a [routerLink]="['./tree-view-dynamic']">Dynamic Tree View</a></li>
+            <li><a [routerLink]="['./tree-node-expandable']">Expandable Tree Node</a></li>
         </ul>
         <router-outlet></router-outlet>
     `

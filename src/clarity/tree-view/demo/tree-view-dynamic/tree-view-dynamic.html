@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-tree-node *ngFor="let dir of myHome">
+    {{dir.dirName}}
+
+    <clr-tree-node *ngFor="let file of dir.childFiles">
+        {{file.fileName}}
+    </clr-tree-node>
+
+    <clr-tree-node *ngFor="let subDir of dir.childDirs">
+        {{subDir.dirName}}
+
+        <clr-tree-node *ngFor="let subDirFile of subDir.childFiles">
+            {{subDirFile.fileName}}
+        </clr-tree-node>
+    </clr-tree-node>
+</clr-tree-node>

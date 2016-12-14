@@ -7,8 +7,11 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {ClarityModule} from "../../clarity.module";
 import {ROUTING} from "./tree-view.demo.routing";
+
 import {TreeViewDemo} from "./tree-view.demo";
 import {TreeViewBasicStructureDemo} from "./basic-structure/tree-view-basic";
+import {TreeNodeExpandableDemo} from "./tree-node-expandable/tree-node-expandable";
+import {TreeViewDynamicDemo} from "./tree-view-dynamic/tree-view-dynamic";
 
 @NgModule({
     imports: [
@@ -18,11 +21,15 @@ import {TreeViewBasicStructureDemo} from "./basic-structure/tree-view-basic";
     ],
     declarations: [
         TreeViewDemo,
-        TreeViewBasicStructureDemo
+        TreeViewBasicStructureDemo,
+        TreeNodeExpandableDemo,
+        TreeViewDynamicDemo
     ],
     exports: [
         TreeViewDemo,
-        TreeViewBasicStructureDemo
+        TreeViewBasicStructureDemo,
+        TreeNodeExpandableDemo,
+        TreeViewDynamicDemo
     ]
 })
 export default class TooltipsDemoModule {

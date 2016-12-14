@@ -5,12 +5,12 @@
   -->
 <button
     class="clr-tree-node-caret"
-    (click)="toggleCollapse()">
+    (click)="toggleCollapse()"
+    *ngIf="(isExpandable || hasChildren)">
     <clr-icon
         shape="caret"
         size="16"
-        [dir]="caretDirection"
-        *ngIf="hasChildren"></clr-icon>
+        [dir]="caretDirection"></clr-icon>
 </button>
 <ng-content></ng-content>
 <!-- FIXME: remove this string concatenation when boolean states are supported -->
