@@ -8,7 +8,6 @@ import {
     AfterContentInit,
     Component,
     ContentChildren,
-    Input,
     QueryList,
     trigger
 } from "@angular/core";
@@ -25,9 +24,8 @@ export class TreeNode implements AfterContentInit {
 
     @ContentChildren(TreeNode) childNodes: QueryList<TreeNode>;
 
-    @Input("clrTestTreeInput") testInput: string;
-
     collapsed: boolean = true;
+    hasChildren: boolean = false;
     caretDirection: string = this.collapsed ? "right" : "down";
 
     toggleCollapse(): void {
@@ -40,6 +38,16 @@ export class TreeNode implements AfterContentInit {
     }
 
     ngAfterContentInit() {
-        console.log(this.childNodes);
+        this.hasChildren = this.treeNodeHasChildren();
     }
+
+    treeNodeHasChildren(): boolean {
+        //Since @ContentChildren registers itself as a child too
+        //we check for length > 1 instead of 0
+        if(this.childNodes.length > 1) {
+            return true;
+        }
+        return false;
+    }
+
 }

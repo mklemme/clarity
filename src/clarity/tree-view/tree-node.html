@@ -5,7 +5,11 @@
   -->
 
 <button class="clr-tree-node-caret" (click)="toggleCollapse()">
-    <clr-icon shape="caret" [dir]="caretDirection" size="16"></clr-icon>
+    <clr-icon
+        shape="caret"
+        size="16"
+        [dir]="caretDirection"
+        *ngIf="hasChildren"></clr-icon>
 </button>
 <ng-content></ng-content>
 <!-- FIXME: remove this string concatenation when boolean states are supported -->
