@@ -3,8 +3,9 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-
-<button class="clr-tree-node-caret" (click)="toggleCollapse()">
+<button
+    class="clr-tree-node-caret"
+    (click)="toggleCollapse()">
     <clr-icon
         shape="caret"
         size="16"
@@ -13,6 +14,8 @@
 </button>
 <ng-content></ng-content>
 <!-- FIXME: remove this string concatenation when boolean states are supported -->
-<div [@collapse]="''+collapsed" class="clr-tree-node-children">
+<div
+    class="clr-tree-node-children"
+    [@collapse]="''+!expanded">
     <ng-content select="clr-tree-node"></ng-content>
 </div>

@@ -8,6 +8,7 @@ import {
     AfterContentInit,
     Component,
     ContentChildren,
+    Input,
     QueryList,
     trigger
 } from "@angular/core";
@@ -24,17 +25,18 @@ export class TreeNode implements AfterContentInit {
 
     @ContentChildren(TreeNode) childNodes: QueryList<TreeNode>;
 
-    collapsed: boolean = true;
+    @Input("clrTreeNodeExpanded") expanded = false;
+
     hasChildren: boolean = false;
-    caretDirection: string = this.collapsed ? "right" : "down";
+    caretDirection: string = this.expanded ? "down" : "right";
 
     toggleCollapse(): void {
-        this.collapsed = !this.collapsed;
+        this.expanded = !this.expanded;
         this.toggleDirection();
     }
 
     toggleDirection(): void {
-        this.caretDirection = this.collapsed ? "right" : "down";
+        this.caretDirection = this.expanded ? "down" : "right";
     }
 
     ngAfterContentInit() {
