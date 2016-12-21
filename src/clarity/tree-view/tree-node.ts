@@ -32,6 +32,8 @@ export class TreeNode implements AfterContentInit {
         = new EventEmitter<boolean>(false);
 
     @Input("clrTreeNodeExpandable") isExpandable = false;
+    @Input("clrTreeNodeLoading") loading = false;
+
 
     hasChildren: boolean = false;
     caretDirection: string = this.expanded ? "down" : "right";

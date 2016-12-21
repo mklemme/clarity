@@ -6,12 +6,15 @@
 <button
     class="clr-tree-node-caret"
     (click)="toggleCollapse()"
-    *ngIf="(isExpandable || hasChildren)">
+    *ngIf="(isExpandable || hasChildren) && (!loading)">
     <clr-icon
         shape="caret"
         size="16"
         [dir]="caretDirection"></clr-icon>
 </button>
+<span class="tree-node-spinner spinner" *ngIf="loading">
+    Loading...
+</span>
 <ng-content></ng-content>
 <!-- FIXME: remove this string concatenation when boolean states are supported -->
 <div

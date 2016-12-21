@@ -15,7 +15,7 @@ $clr-tree-node-caret-size: $clr_baselineRem_1;
     //Others
 }
 
-.clr-tree-node-caret{
+.clr-tree-node-caret {
     //Positioning
     position: absolute;
     left: 0;
@@ -36,4 +36,19 @@ $clr-tree-node-caret-size: $clr_baselineRem_1;
     clr-icon {
         vertical-align: text-top;
     }
+}
+
+.tree-node-spinner {
+    $spinner-size: 16px;
+
+    //Positioning
+    position: absolute;
+    left: 0;
+    top: ($clr_baselineRem_1 - $spinner-size) / 2;
+
+    //display
+    min-height: $spinner-size;
+    min-width: $spinner-size;
+    height: $spinner-size;
+    width: $spinner-size;
 }
