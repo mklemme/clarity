@@ -13,6 +13,7 @@ import {TreeViewBasicStructureDemo} from "./basic-structure/tree-view-basic";
 import {TreeNodeExpandableDemo} from "./tree-node-expandable/tree-node-expandable";
 import {TreeViewDynamicDemo} from "./tree-view-dynamic/tree-view-dynamic";
 import {TreeNodeLazyLoadingDemo} from "./lazy-loading/lazy-loading";
+import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-change-on-expand";
 
 @NgModule({
     imports: [
@@ -25,14 +26,16 @@ import {TreeNodeLazyLoadingDemo} from "./lazy-loading/lazy-loading";
         TreeViewBasicStructureDemo,
         TreeNodeExpandableDemo,
         TreeViewDynamicDemo,
-        TreeNodeLazyLoadingDemo
+        TreeNodeLazyLoadingDemo,
+        TreeNodeLabelChangeOnExpandDemo
     ],
     exports: [
         TreeViewDemo,
         TreeViewBasicStructureDemo,
         TreeNodeExpandableDemo,
         TreeViewDynamicDemo,
-        TreeNodeLazyLoadingDemo
+        TreeNodeLazyLoadingDemo,
+        TreeNodeLabelChangeOnExpandDemo
     ]
 })
 export default class TooltipsDemoModule {

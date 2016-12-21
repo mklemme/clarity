@@ -17,6 +17,7 @@ import {Component} from "@angular/core";
             <li><a [routerLink]="['./tree-view-dynamic']">Dynamic Tree View</a></li>
             <li><a [routerLink]="['./lazy-loading']">Lazy Loading</a></li>
             <li><a [routerLink]="['./tree-node-expandable']">Expandable Tree Node</a></li>
+            <li><a [routerLink]="['./tree-node-label-change-expand']">Label Change on Expand</a></li>
         </ul>
         <router-outlet></router-outlet>
     `

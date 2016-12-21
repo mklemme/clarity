@@ -8,7 +8,9 @@ import {
     AfterContentInit,
     Component,
     ContentChildren,
+    EventEmitter,
     Input,
+    Output,
     QueryList,
     trigger
 } from "@angular/core";
@@ -26,6 +28,9 @@ export class TreeNode implements AfterContentInit {
     @ContentChildren(TreeNode) childNodes: QueryList<TreeNode>;
 
     @Input("clrTreeNodeExpanded") expanded = false;
+    @Output("clrTreeNodeExpandedChange") expandedChange: EventEmitter<boolean>
+        = new EventEmitter<boolean>(false);
+
     @Input("clrTreeNodeExpandable") isExpandable = false;
 
     hasChildren: boolean = false;
@@ -34,6 +39,7 @@ export class TreeNode implements AfterContentInit {
     toggleCollapse(): void {
         this.expanded = !this.expanded;
         this.toggleDirection();
+        this.expandedChange.emit(this.expanded);
     }
 
     toggleDirection(): void {
