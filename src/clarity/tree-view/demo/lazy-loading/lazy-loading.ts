@@ -5,6 +5,8 @@
  */
 import {Component} from "@angular/core";
 
+import {File} from "../model/file";
+
 @Component({
     selector: "clr-tree-node-lazy-loading-demo",
     // Note the .css extension here, not .scss. That's the best we can have at the moment.
@@ -12,5 +14,18 @@ import {Component} from "@angular/core";
     templateUrl: "./lazy-loading.html"
 })
 export class TreeNodeLazyLoadingDemo {
+    dirName: string = "Home";
+    files: File[] = [];
 
+    fetchFiles() {
+        if (this.files.length > 0) {
+            return;
+        }
+        setTimeout(() => {
+            let homeFile1: File = new File("home1.txt", "23KB");
+            let homeFile2: File = new File("home2.txt", "25KB");
+            let homeFile3: File = new File("home3.txt", "27KB");
+            this.files = [homeFile1, homeFile2, homeFile3];
+        }, 2000);
+    }
 }
