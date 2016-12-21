@@ -8,7 +8,6 @@ import {Routes, RouterModule} from "@angular/router";
 
 import {TreeViewDemo} from "./tree-view.demo";
 import {TreeViewBasicStructureDemo} from "./basic-structure/tree-view-basic";
-import {TreeNodeExpandableDemo} from "./tree-node-expandable/tree-node-expandable";
 import {TreeViewDynamicDemo} from "./tree-view-dynamic/tree-view-dynamic";
 import {TreeNodeLazyLoadingDemo} from "./lazy-loading/lazy-loading";
 import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-change-on-expand";
@@ -20,7 +19,6 @@ const ROUTES: Routes = [
         children: [
             { path: "", redirectTo: "basic-structure", pathMatch: "full" },
             { path: "basic-structure", component: TreeViewBasicStructureDemo },
-            { path: "tree-node-expandable", component: TreeNodeExpandableDemo },
             { path: "lazy-loading", component: TreeNodeLazyLoadingDemo },
             { path: "tree-view-dynamic", component: TreeViewDynamicDemo },
             { path: "tree-node-label-change-expand", component: TreeNodeLabelChangeOnExpandDemo}

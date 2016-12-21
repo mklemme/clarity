@@ -10,7 +10,6 @@ import {ROUTING} from "./tree-view.demo.routing";
 
 import {TreeViewDemo} from "./tree-view.demo";
 import {TreeViewBasicStructureDemo} from "./basic-structure/tree-view-basic";
-import {TreeNodeExpandableDemo} from "./tree-node-expandable/tree-node-expandable";
 import {TreeViewDynamicDemo} from "./tree-view-dynamic/tree-view-dynamic";
 import {TreeNodeLazyLoadingDemo} from "./lazy-loading/lazy-loading";
 import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-change-on-expand";
@@ -24,7 +23,6 @@ import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-ch
     declarations: [
         TreeViewDemo,
         TreeViewBasicStructureDemo,
-        TreeNodeExpandableDemo,
         TreeViewDynamicDemo,
         TreeNodeLazyLoadingDemo,
         TreeNodeLabelChangeOnExpandDemo
@@ -32,7 +30,6 @@ import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-ch
     exports: [
         TreeViewDemo,
         TreeViewBasicStructureDemo,
-        TreeNodeExpandableDemo,
         TreeViewDynamicDemo,
         TreeNodeLazyLoadingDemo,
         TreeNodeLabelChangeOnExpandDemo
