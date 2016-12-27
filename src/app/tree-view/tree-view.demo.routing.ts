@@ -7,7 +7,8 @@ import {ModuleWithProviders} from "@angular/core/src/metadata/ng_module";
 import {Routes, RouterModule} from "@angular/router";
 
 import {TreeViewDemo} from "./tree-view.demo";
-import {TreeViewBasicStructureDemo} from "./basic-structure/tree-view-basic";
+import {TreeNodeBasicStructureDemo} from "./basic-tree-node/tree-node-basic";
+import {TreeViewBasicStructureDemo} from "./basic-tree-view/tree-view-basic";
 import {TreeViewDynamicDemo} from "./tree-view-dynamic/tree-view-dynamic";
 import {TreeNodeLazyLoadingDemo} from "./lazy-loading/lazy-loading";
 import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-change-on-expand";
@@ -17,8 +18,9 @@ const ROUTES: Routes = [
         path: "",
         component: TreeViewDemo,
         children: [
-            { path: "", redirectTo: "basic-structure", pathMatch: "full" },
-            { path: "basic-structure", component: TreeViewBasicStructureDemo },
+            { path: "", redirectTo: "basic-tree-node", pathMatch: "full" },
+            { path: "basic-tree-node", component: TreeNodeBasicStructureDemo },
+            { path: "basic-tree-view", component: TreeViewBasicStructureDemo },
             { path: "lazy-loading", component: TreeNodeLazyLoadingDemo },
             { path: "tree-view-dynamic", component: TreeViewDynamicDemo },
             { path: "tree-node-label-change-expand", component: TreeNodeLabelChangeOnExpandDemo}

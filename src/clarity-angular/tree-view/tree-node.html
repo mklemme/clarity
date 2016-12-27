@@ -15,6 +15,10 @@
 <span class="tree-node-spinner spinner" *ngIf="loading">
     Loading...
 </span>
+<clr-checkbox
+    *ngIf="_isSelectable"
+    [ngModel]="selected"
+    (ngModelChange)="onSelectedChange()"></clr-checkbox>
 <ng-content></ng-content>
 <!-- FIXME: remove this string concatenation when boolean states are supported -->
 <div

@@ -12,8 +12,11 @@ import {
     Input,
     Output,
     QueryList,
+    Optional,
     trigger
 } from "@angular/core";
+
+import {TreeView} from "./tree-view";
 
 import {collapse} from "../animations/collapse/index";
 
@@ -33,6 +36,12 @@ export class TreeNode implements AfterContentInit {
     @Input("clrTreeNodeExpandable") isExpandable = false;
     @Input("clrTreeNodeLoading") loading = false;
 
+    @Input("clrTreeNodeSelected") selected: boolean = false;
+
+    private _isSelectable: boolean = false;
+
+    constructor( @Optional() private tree: TreeView) {
+    }
 
     hasChildren: boolean = false;
     caretDirection: string = this.expanded ? "down" : "right";
@@ -48,6 +57,9 @@ export class TreeNode implements AfterContentInit {
     }
 
     ngAfterContentInit() {
+        if (this.tree && this.tree.isSelectable) {
+            this._isSelectable = true;
+        }
         this.hasChildren = this.treeNodeHasChildren();
     }
 
@@ -58,6 +70,20 @@ export class TreeNode implements AfterContentInit {
             return true;
         }
         return false;
+    }
+
+    onSelectedChange(): void {
+        this.selected = !this.selected;
+        this.refreshChildrenSelection(this);
+        this.refreshParentSelection();
+    }
+
+    refreshChildrenSelection(treeNode: TreeNode): void {
+        console.log("children selection refreshed");
+    }
+
+    refreshParentSelection(): void {
+        console.log("parent selection refreshed");
     }
 
 }

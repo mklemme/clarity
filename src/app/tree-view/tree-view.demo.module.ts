@@ -9,7 +9,8 @@ import {ClarityModule} from "../../clarity-angular";
 import {ROUTING} from "./tree-view.demo.routing";
 
 import {TreeViewDemo} from "./tree-view.demo";
-import {TreeViewBasicStructureDemo} from "./basic-structure/tree-view-basic";
+import {TreeNodeBasicStructureDemo} from "./basic-tree-node/tree-node-basic";
+import {TreeViewBasicStructureDemo} from "./basic-tree-view/tree-view-basic";
 import {TreeViewDynamicDemo} from "./tree-view-dynamic/tree-view-dynamic";
 import {TreeNodeLazyLoadingDemo} from "./lazy-loading/lazy-loading";
 import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-change-on-expand";
@@ -22,6 +23,7 @@ import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-ch
     ],
     declarations: [
         TreeViewDemo,
+        TreeNodeBasicStructureDemo,
         TreeViewBasicStructureDemo,
         TreeViewDynamicDemo,
         TreeNodeLazyLoadingDemo,
@@ -29,6 +31,7 @@ import {TreeNodeLabelChangeOnExpandDemo} from "./label-change-on-expand/label-ch
     ],
     exports: [
         TreeViewDemo,
+        TreeNodeBasicStructureDemo,
         TreeViewBasicStructureDemo,
         TreeViewDynamicDemo,
         TreeNodeLazyLoadingDemo,
