@@ -47,6 +47,7 @@ export class TreeNode implements AfterContentInit {
     @Input("clrTreeNodeSelected")
     public set selected(value: boolean) {
         this._selected = value;
+        this._selectionIndeterminate = false;
     }
 
     @Output("clrTreeNodeSelectedChange") selectedChange: EventEmitter<boolean>
@@ -120,16 +121,30 @@ export class TreeNode implements AfterContentInit {
     }
 
     refreshParentSelection(parentNode: TreeNode): void {
-        console.log("parent selection refreshed");
-        if(!this.parent) {
+        if (!this.parent) {
             return;
         }
-        if (this.checkIfAllChildrenSelected(parentNode)) {
+        let childrenSelected = this.noOfChildrenSelected(parentNode);
+        if (childrenSelected === (parentNode.childNodes.length - 1)) {
             parentNode.selected = true;
-            parentNode.refreshParentSelection(parentNode.parent);
+        } else if (childrenSelected === 0) {
+            parentNode.selected = false;
         } else {
-            console.log("Parent Indeterminate");
+            parentNode.selected = false;
+            parentNode._selectionIndeterminate = true;
         }
+        parentNode.refreshParentSelection(parentNode.parent);
+    }
+
+    noOfChildrenSelected(node: TreeNode): number {
+        let childNodes: TreeNode[] = node.childNodes.toArray();
+        let count: number = 0;
+        for (let i = 0; i < childNodes.length; i++) {
+            if ((childNodes[i] !== node) && (childNodes[i].selected)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     checkIfAllChildrenSelected(node: TreeNode): boolean {

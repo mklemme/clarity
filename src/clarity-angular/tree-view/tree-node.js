@@ -39,6 +39,7 @@ var TreeNode = TreeNode_1 = (function () {
         },
         set: function (value) {
             this._selected = value;
+            this._selectionIndeterminate = false;
         },
         enumerable: true,
         configurable: true
@@ -97,17 +98,31 @@ var TreeNode = TreeNode_1 = (function () {
         }
     };
     TreeNode.prototype.refreshParentSelection = function (parentNode) {
-        console.log("parent selection refreshed");
         if (!this.parent) {
             return;
         }
-        if (this.checkIfAllChildrenSelected(parentNode)) {
+        var childrenSelected = this.noOfChildrenSelected(parentNode);
+        if (childrenSelected === (parentNode.childNodes.length - 1)) {
             parentNode.selected = true;
-            parentNode.refreshParentSelection(parentNode.parent);
+        }
+        else if (childrenSelected === 0) {
+            parentNode.selected = false;
         }
         else {
-            console.log("Parent Indeterminate");
+            parentNode.selected = false;
+            parentNode._selectionIndeterminate = true;
         }
+        parentNode.refreshParentSelection(parentNode.parent);
+    };
+    TreeNode.prototype.noOfChildrenSelected = function (node) {
+        var childNodes = node.childNodes.toArray();
+        var count = 0;
+        for (var i = 0; i < childNodes.length; i++) {
+            if ((childNodes[i] !== node) && (childNodes[i].selected)) {
+                count++;
+            }
+        }
+        return count;
     };
     TreeNode.prototype.checkIfAllChildrenSelected = function (node) {
         var childNodes = node.childNodes.toArray();
