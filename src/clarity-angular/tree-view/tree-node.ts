@@ -74,16 +74,26 @@ export class TreeNode implements AfterContentInit {
 
     onSelectedChange(): void {
         this.selected = !this.selected;
-        this.refreshChildrenSelection(this);
+        this.refreshChildrenSelection(this,this.selected);
         this.refreshParentSelection();
     }
 
-    refreshChildrenSelection(treeNode: TreeNode): void {
-        console.log("children selection refreshed");
+    refreshChildrenSelection(treeNode: TreeNode, selected: boolean): void {
+        if (!treeNode.hasChildren) {
+            return;
+        } else {
+            treeNode.childNodes.forEach(function(childNode){
+                //Checking whether the child node is not the
+                //parent because of the way ContentChildren works
+                if (childNode!==treeNode) {
+                    childNode.selected = selected;
+                    treeNode.refreshChildrenSelection(childNode, selected);
+                }
+            });
+        }
     }
 
     refreshParentSelection(): void {
         console.log("parent selection refreshed");
     }
-
 }
