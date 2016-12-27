@@ -26,11 +26,23 @@ var TreeNode = TreeNode_1 = (function () {
         this.expandedChange = new core_1.EventEmitter(false);
         this.isExpandable = false;
         this.loading = false;
-        this.selected = false;
+        this._selected = false;
+        this._selectionIndeterminate = false;
+        this.selectedChange = new core_1.EventEmitter(false);
         this._isSelectable = false;
         this.hasChildren = false;
         this.caretDirection = this.expanded ? "down" : "right";
     }
+    Object.defineProperty(TreeNode.prototype, "selected", {
+        get: function () {
+            return this._selected;
+        },
+        set: function (value) {
+            this._selected = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     TreeNode.prototype.toggleCollapse = function () {
         this.expanded = !this.expanded;
         this.toggleDirection();
@@ -44,6 +56,7 @@ var TreeNode = TreeNode_1 = (function () {
             this._isSelectable = true;
         }
         this.hasChildren = this.treeNodeHasChildren();
+        this.addParentReference(this);
     };
     TreeNode.prototype.treeNodeHasChildren = function () {
         //Since @ContentChildren registers itself as a child too,
@@ -53,13 +66,22 @@ var TreeNode = TreeNode_1 = (function () {
         }
         return false;
     };
+    TreeNode.prototype.addParentReference = function (parent) {
+        if (this.hasChildren) {
+            this.childNodes.forEach(function (childNode) {
+                if (childNode !== parent) {
+                    childNode.parent = parent;
+                }
+            });
+        }
+    };
     TreeNode.prototype.onSelectedChange = function () {
         this.selected = !this.selected;
         this.refreshChildrenSelection(this, this.selected);
-        this.refreshParentSelection();
+        this.selectedChange.emit(this.selected);
+        this.refreshParentSelection(this.parent);
     };
     TreeNode.prototype.refreshChildrenSelection = function (treeNode, selected) {
-        console.log("children selection refreshed");
         if (!treeNode.hasChildren) {
             return;
         }
@@ -74,8 +96,27 @@ var TreeNode = TreeNode_1 = (function () {
             });
         }
     };
-    TreeNode.prototype.refreshParentSelection = function () {
+    TreeNode.prototype.refreshParentSelection = function (parentNode) {
         console.log("parent selection refreshed");
+        if (!this.parent) {
+            return;
+        }
+        if (this.checkIfAllChildrenSelected(parentNode)) {
+            parentNode.selected = true;
+            parentNode.refreshParentSelection(parentNode.parent);
+        }
+        else {
+            console.log("Parent Indeterminate");
+        }
+    };
+    TreeNode.prototype.checkIfAllChildrenSelected = function (node) {
+        var childNodes = node.childNodes.toArray();
+        for (var i = 0; i < childNodes.length; i++) {
+            if ((childNodes[i] !== node) && (!childNodes[i].selected)) {
+                return false;
+            }
+        }
+        return true;
     };
     return TreeNode;
 }());
@@ -100,9 +141,9 @@ __decorate([
     __metadata("design:type", Object)
 ], TreeNode.prototype, "loading", void 0);
 __decorate([
-    core_1.Input("clrTreeNodeSelected"),
-    __metadata("design:type", Boolean)
-], TreeNode.prototype, "selected", void 0);
+    core_1.Output("clrTreeNodeSelectedChange"),
+    __metadata("design:type", core_1.EventEmitter)
+], TreeNode.prototype, "selectedChange", void 0);
 TreeNode = TreeNode_1 = __decorate([
     core_1.Component({
         selector: "clr-tree-node",

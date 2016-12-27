@@ -26,17 +26,31 @@ import {collapse} from "../animations/collapse/index";
     animations: [trigger("collapse", collapse())]
 })
 export class TreeNode implements AfterContentInit {
+    private parent: TreeNode;
 
     @ContentChildren(TreeNode) childNodes: QueryList<TreeNode>;
 
     @Input("clrTreeNodeExpanded") expanded = false;
     @Output("clrTreeNodeExpandedChange") expandedChange: EventEmitter<boolean>
-        = new EventEmitter<boolean>(false);
+    = new EventEmitter<boolean>(false);
 
     @Input("clrTreeNodeExpandable") isExpandable = false;
     @Input("clrTreeNodeLoading") loading = false;
 
-    @Input("clrTreeNodeSelected") selected: boolean = false;
+    private _selected: boolean = false;
+    private _selectionIndeterminate: boolean = false;
+
+    public get selected(): boolean {
+        return this._selected;
+    }
+
+    @Input("clrTreeNodeSelected")
+    public set selected(value: boolean) {
+        this._selected = value;
+    }
+
+    @Output("clrTreeNodeSelectedChange") selectedChange: EventEmitter<boolean>
+        = new EventEmitter<boolean>(false);
 
     private _isSelectable: boolean = false;
 
@@ -61,6 +75,7 @@ export class TreeNode implements AfterContentInit {
             this._isSelectable = true;
         }
         this.hasChildren = this.treeNodeHasChildren();
+        this.addParentReference(this);
     }
 
     treeNodeHasChildren(): boolean {
@@ -72,20 +87,31 @@ export class TreeNode implements AfterContentInit {
         return false;
     }
 
+    addParentReference(parent: TreeNode): void {
+        if (this.hasChildren) {
+            this.childNodes.forEach(function(childNode) {
+                if (childNode !== parent) {
+                    childNode.parent = parent;
+                }
+            });
+        }
+    }
+
     onSelectedChange(): void {
         this.selected = !this.selected;
-        this.refreshChildrenSelection(this,this.selected);
-        this.refreshParentSelection();
+        this.refreshChildrenSelection(this, this.selected);
+        this.selectedChange.emit(this.selected);
+        this.refreshParentSelection(this.parent);
     }
 
     refreshChildrenSelection(treeNode: TreeNode, selected: boolean): void {
         if (!treeNode.hasChildren) {
             return;
         } else {
-            treeNode.childNodes.forEach(function(childNode){
+            treeNode.childNodes.forEach(function(childNode) {
                 //Checking whether the child node is not the
                 //parent because of the way ContentChildren works
-                if (childNode!==treeNode) {
+                if (childNode !== treeNode) {
                     childNode.selected = selected;
                     treeNode.refreshChildrenSelection(childNode, selected);
                 }
@@ -93,7 +119,26 @@ export class TreeNode implements AfterContentInit {
         }
     }
 
-    refreshParentSelection(): void {
+    refreshParentSelection(parentNode: TreeNode): void {
         console.log("parent selection refreshed");
+        if(!this.parent) {
+            return;
+        }
+        if (this.checkIfAllChildrenSelected(parentNode)) {
+            parentNode.selected = true;
+            parentNode.refreshParentSelection(parentNode.parent);
+        } else {
+            console.log("Parent Indeterminate");
+        }
+    }
+
+    checkIfAllChildrenSelected(node: TreeNode): boolean {
+        let childNodes: TreeNode[] = node.childNodes.toArray();
+        for (let i = 0; i < childNodes.length; i++) {
+            if ((childNodes[i] !== node) && (!childNodes[i].selected)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
