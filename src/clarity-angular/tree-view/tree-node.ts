@@ -20,7 +20,6 @@ import {collapse} from "../animations/collapse/index";
 @Component({
     selector: "clr-tree-node",
     templateUrl: "./tree-node.html",
-    styleUrls: ["./tree-node.css"],
     animations: [trigger("collapse", collapse())]
 })
 export class TreeNode implements AfterContentInit {

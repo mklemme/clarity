@@ -5,7 +5,7 @@
  */
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {ClarityModule} from "../../clarity.module";
+import {ClarityModule} from "../../clarity-angular";
 import {ROUTING} from "./tree-view.demo.routing";
 
 import {TreeViewDemo} from "./tree-view.demo";

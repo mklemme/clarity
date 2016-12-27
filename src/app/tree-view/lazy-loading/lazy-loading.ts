@@ -8,6 +8,7 @@ import {Component} from "@angular/core";
 import {File} from "../model/file";
 
 @Component({
+    moduleId: module.id,
     selector: "clr-tree-node-lazy-loading-demo",
     // Note the .css extension here, not .scss. That's the best we can have at the moment.
     styleUrls: ["../tree-view.demo.css"],

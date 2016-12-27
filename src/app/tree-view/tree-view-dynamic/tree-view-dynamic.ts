@@ -9,6 +9,7 @@ import {Directory} from "../model/directory";
 import {File} from "../model/file";
 
 @Component({
+    moduleId: module.id,
     selector: "clr-tree-view-dynamic-demo",
     // Note the .css extension here, not .scss. That's the best we can have at the moment.
     styleUrls: ["../tree-view.demo.css"],
