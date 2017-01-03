@@ -13,22 +13,28 @@ import {
     Output,
     QueryList,
     Optional,
+    SkipSelf,
     trigger
 } from "@angular/core";
 
 import {TreeView} from "./tree-view";
+
+import {TreeSelection} from "./providers/selection.service";
 
 import {collapse} from "../animations/collapse/index";
 
 @Component({
     selector: "clr-tree-node",
     templateUrl: "./tree-node.html",
-    animations: [trigger("collapse", collapse())]
+    animations: [trigger("collapse", collapse())],
+    providers: [TreeSelection]
 })
 export class TreeNode implements AfterContentInit {
-    private parent: TreeNode;
+    //private parent: TreeNode;
 
     @ContentChildren(TreeNode) childNodes: QueryList<TreeNode>;
+
+    @Input("clrTreeModel") treeModel: any;
 
     @Input("clrTreeNodeExpanded") expanded = false;
     @Output("clrTreeNodeExpandedChange") expandedChange: EventEmitter<boolean>
@@ -51,11 +57,13 @@ export class TreeNode implements AfterContentInit {
     }
 
     @Output("clrTreeNodeSelectedChange") selectedChange: EventEmitter<boolean>
-        = new EventEmitter<boolean>(false);
+    = new EventEmitter<boolean>(false);
 
     private _isSelectable: boolean = false;
 
-    constructor( @Optional() private tree: TreeView) {
+    constructor( @Optional() private tree: TreeView,
+                 @SkipSelf() @Optional() private parent: TreeNode,
+                 private selection: TreeSelection) {
     }
 
     hasChildren: boolean = false;
@@ -76,7 +84,9 @@ export class TreeNode implements AfterContentInit {
             this._isSelectable = true;
         }
         this.hasChildren = this.treeNodeHasChildren();
-        this.addParentReference(this);
+        this.selection.model = this.treeModel;
+        console.log(this.parent);
+        //this.addParentReference(this);
     }
 
     treeNodeHasChildren(): boolean {
@@ -88,6 +98,7 @@ export class TreeNode implements AfterContentInit {
         return false;
     }
 
+    /*
     addParentReference(parent: TreeNode): void {
         if (this.hasChildren) {
             this.childNodes.forEach(function(childNode) {
@@ -96,15 +107,16 @@ export class TreeNode implements AfterContentInit {
                 }
             });
         }
-    }
+    }*/
 
     onSelectedChange(): void {
         this.selected = !this.selected;
-        this.refreshChildrenSelection(this, this.selected);
+        //this.refreshChildrenSelection(this, this.selected);
         this.selectedChange.emit(this.selected);
-        this.refreshParentSelection(this.parent);
+        //this.refreshParentSelection(this.parent);
     }
 
+    /*
     refreshChildrenSelection(treeNode: TreeNode, selected: boolean): void {
         if (!treeNode.hasChildren) {
             return;
@@ -146,4 +158,5 @@ export class TreeNode implements AfterContentInit {
         }
         return count;
     }
+    */
 }

@@ -18,10 +18,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var core_1 = require("@angular/core");
 var tree_view_1 = require("./tree-view");
+var selection_service_1 = require("./providers/selection.service");
 var index_1 = require("../animations/collapse/index");
 var TreeNode = TreeNode_1 = (function () {
-    function TreeNode(tree) {
+    function TreeNode(tree, parent, selection) {
         this.tree = tree;
+        this.parent = parent;
+        this.selection = selection;
         this.expanded = false;
         this.expandedChange = new core_1.EventEmitter(false);
         this.isExpandable = false;
@@ -57,7 +60,9 @@ var TreeNode = TreeNode_1 = (function () {
             this._isSelectable = true;
         }
         this.hasChildren = this.treeNodeHasChildren();
-        this.addParentReference(this);
+        this.selection.model = this.treeModel;
+        console.log(this.parent);
+        //this.addParentReference(this);
     };
     TreeNode.prototype.treeNodeHasChildren = function () {
         //Since @ContentChildren registers itself as a child too,
@@ -67,62 +72,21 @@ var TreeNode = TreeNode_1 = (function () {
         }
         return false;
     };
-    TreeNode.prototype.addParentReference = function (parent) {
+    /*
+    addParentReference(parent: TreeNode): void {
         if (this.hasChildren) {
-            this.childNodes.forEach(function (childNode) {
+            this.childNodes.forEach(function(childNode) {
                 if (childNode !== parent) {
                     childNode.parent = parent;
                 }
             });
         }
-    };
+    }*/
     TreeNode.prototype.onSelectedChange = function () {
         this.selected = !this.selected;
-        this.refreshChildrenSelection(this, this.selected);
+        //this.refreshChildrenSelection(this, this.selected);
         this.selectedChange.emit(this.selected);
-        this.refreshParentSelection(this.parent);
-    };
-    TreeNode.prototype.refreshChildrenSelection = function (treeNode, selected) {
-        if (!treeNode.hasChildren) {
-            return;
-        }
-        else {
-            treeNode.childNodes.forEach(function (childNode) {
-                //Checking whether the child node is not the
-                //parent because of the way ContentChildren works
-                if (childNode !== treeNode) {
-                    childNode.selected = selected;
-                    treeNode.refreshChildrenSelection(childNode, selected);
-                }
-            });
-        }
-    };
-    TreeNode.prototype.refreshParentSelection = function (parentNode) {
-        if (!this.parent) {
-            return;
-        }
-        var childrenSelected = this.noOfChildrenSelected(parentNode);
-        if (childrenSelected === (parentNode.childNodes.length - 1)) {
-            parentNode.selected = true;
-        }
-        else if (childrenSelected === 0) {
-            parentNode.selected = false;
-        }
-        else {
-            parentNode.selected = false;
-            parentNode._selectionIndeterminate = true;
-        }
-        parentNode.refreshParentSelection(parentNode.parent);
-    };
-    TreeNode.prototype.noOfChildrenSelected = function (node) {
-        var childNodes = node.childNodes.toArray();
-        var count = 0;
-        for (var i = 0; i < childNodes.length; i++) {
-            if ((childNodes[i] !== node) && (childNodes[i].selected)) {
-                count++;
-            }
-        }
-        return count;
+        //this.refreshParentSelection(this.parent);
     };
     return TreeNode;
 }());
@@ -130,6 +94,10 @@ __decorate([
     core_1.ContentChildren(TreeNode_1),
     __metadata("design:type", core_1.QueryList)
 ], TreeNode.prototype, "childNodes", void 0);
+__decorate([
+    core_1.Input("clrTreeModel"),
+    __metadata("design:type", Object)
+], TreeNode.prototype, "treeModel", void 0);
 __decorate([
     core_1.Input("clrTreeNodeExpanded"),
     __metadata("design:type", Object)
@@ -154,10 +122,14 @@ TreeNode = TreeNode_1 = __decorate([
     core_1.Component({
         selector: "clr-tree-node",
         templateUrl: "./tree-node.html",
-        animations: [core_1.trigger("collapse", index_1.collapse())]
+        animations: [core_1.trigger("collapse", index_1.collapse())],
+        providers: [selection_service_1.TreeSelection]
     }),
     __param(0, core_1.Optional()),
-    __metadata("design:paramtypes", [tree_view_1.TreeView])
+    __param(1, core_1.SkipSelf()), __param(1, core_1.Optional()),
+    __metadata("design:paramtypes", [tree_view_1.TreeView,
+        TreeNode,
+        selection_service_1.TreeSelection])
 ], TreeNode);
 exports.TreeNode = TreeNode;
 var TreeNode_1;
