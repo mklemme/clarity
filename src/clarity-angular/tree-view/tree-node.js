@@ -124,15 +124,6 @@ var TreeNode = TreeNode_1 = (function () {
         }
         return count;
     };
-    TreeNode.prototype.checkIfAllChildrenSelected = function (node) {
-        var childNodes = node.childNodes.toArray();
-        for (var i = 0; i < childNodes.length; i++) {
-            if ((childNodes[i] !== node) && (!childNodes[i].selected)) {
-                return false;
-            }
-        }
-        return true;
-    };
     return TreeNode;
 }());
 __decorate([

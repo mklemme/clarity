@@ -146,14 +146,4 @@ export class TreeNode implements AfterContentInit {
         }
         return count;
     }
-
-    checkIfAllChildrenSelected(node: TreeNode): boolean {
-        let childNodes: TreeNode[] = node.childNodes.toArray();
-        for (let i = 0; i < childNodes.length; i++) {
-            if ((childNodes[i] !== node) && (!childNodes[i].selected)) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
