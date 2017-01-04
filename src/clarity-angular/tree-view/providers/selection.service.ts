@@ -40,17 +40,17 @@ export class TreeSelection {
         }
 
         if (updateParent) {
-            this.updateParentSelectedState();
+           this.updateParentSelectedState();
         }
     }
 
-    updateChildrenSelectedState(selected: boolean): void {
+    private updateChildrenSelectedState(selected: boolean): void {
         this.children.forEach(function(child) {
             child.updateSelectedState(selected, true, false, false);
         });
     }
 
-    updateParentSelectedState(): void {
+    private updateParentSelectedState(): void {
         if (!this.parent) {
             return;
         }

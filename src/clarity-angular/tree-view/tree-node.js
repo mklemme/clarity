@@ -64,7 +64,6 @@ var TreeNode = TreeNode_1 = (function () {
         if (this._isSelectable) {
             this.populateTreeSelectionProvider();
         }
-        //this.addParentReference(this);
     };
     TreeNode.prototype.treeNodeHasChildren = function () {
         //Since @ContentChildren registers itself as a child too,
@@ -78,8 +77,6 @@ var TreeNode = TreeNode_1 = (function () {
         this.selected = !this.selected;
         this.selectedChange.emit(this.selected);
         this.selection.updateSelectedState(this.selected);
-        //this.refreshChildrenSelection(this, this.selected);
-        //this.refreshParentSelection(this.parent);
     };
     TreeNode.prototype.populateTreeSelectionProvider = function () {
         this.selection.model = this.treeModel;
