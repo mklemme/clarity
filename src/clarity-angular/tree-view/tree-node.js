@@ -61,7 +61,9 @@ var TreeNode = TreeNode_1 = (function () {
         }
         this.hasChildren = this.treeNodeHasChildren();
         this.selection.model = this.treeModel;
-        console.log(this.parent);
+        if (this._isSelectable) {
+            this.populateTreeSelectionProvider();
+        }
         //this.addParentReference(this);
     };
     TreeNode.prototype.treeNodeHasChildren = function () {
@@ -72,21 +74,22 @@ var TreeNode = TreeNode_1 = (function () {
         }
         return false;
     };
-    /*
-    addParentReference(parent: TreeNode): void {
-        if (this.hasChildren) {
-            this.childNodes.forEach(function(childNode) {
-                if (childNode !== parent) {
-                    childNode.parent = parent;
-                }
-            });
-        }
-    }*/
     TreeNode.prototype.onSelectedChange = function () {
         this.selected = !this.selected;
-        //this.refreshChildrenSelection(this, this.selected);
         this.selectedChange.emit(this.selected);
+        this.selection.updateSelectedState(this.selected);
+        //this.refreshChildrenSelection(this, this.selected);
         //this.refreshParentSelection(this.parent);
+    };
+    TreeNode.prototype.populateTreeSelectionProvider = function () {
+        this.selection.model = this.treeModel;
+        if (this.hasChildren) {
+            this.childNodes.forEach(function (child) {
+                if (child !== this) {
+                    this.selection.children.push(child.selection);
+                }
+            }.bind(this));
+        }
     };
     return TreeNode;
 }());

@@ -57,7 +57,7 @@ export class TreeNode implements AfterContentInit {
     }
 
     @Output("clrTreeNodeSelectedChange") selectedChange: EventEmitter<boolean>
-    = new EventEmitter<boolean>(false);
+        = new EventEmitter<boolean>(false);
 
     private _isSelectable: boolean = false;
 
@@ -85,7 +85,9 @@ export class TreeNode implements AfterContentInit {
         }
         this.hasChildren = this.treeNodeHasChildren();
         this.selection.model = this.treeModel;
-        console.log(this.parent);
+        if (this._isSelectable) {
+            this.populateTreeSelectionProvider();
+        }
         //this.addParentReference(this);
     }
 
@@ -98,6 +100,25 @@ export class TreeNode implements AfterContentInit {
         return false;
     }
 
+    onSelectedChange(): void {
+        this.selected = !this.selected;
+        this.selectedChange.emit(this.selected);
+        this.selection.updateSelectedState(this.selected);
+        //this.refreshChildrenSelection(this, this.selected);
+        //this.refreshParentSelection(this.parent);
+    }
+
+    populateTreeSelectionProvider(): void {
+        this.selection.model = this.treeModel;
+        if (this.hasChildren) {
+            this.childNodes.forEach(function(child: TreeNode) {
+                if (child !== this) {
+                    this.selection.children.push(child.selection);
+                }
+            }.bind(this));
+        }
+    }
+
     /*
     addParentReference(parent: TreeNode): void {
         if (this.hasChildren) {
@@ -108,13 +129,6 @@ export class TreeNode implements AfterContentInit {
             });
         }
     }*/
-
-    onSelectedChange(): void {
-        this.selected = !this.selected;
-        //this.refreshChildrenSelection(this, this.selected);
-        this.selectedChange.emit(this.selected);
-        //this.refreshParentSelection(this.parent);
-    }
 
     /*
     refreshChildrenSelection(treeNode: TreeNode, selected: boolean): void {
