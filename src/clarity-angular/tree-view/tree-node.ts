@@ -42,16 +42,20 @@ export class TreeNode implements AfterContentInit {
     @Input("clrTreeNodeLoading") loading = false;
 
     private _selected: boolean = false;
-    private _selectionIndeterminate: boolean = false;
 
     public get selected(): boolean {
-        return this._selected;
+        this._selected = this.selection.selected;
+        return this.selection.selected;
     }
 
     @Input("clrTreeNodeSelected")
     public set selected(value: boolean) {
         this._selected = value;
-        this._selectionIndeterminate = false;
+        if (this._selected !== this.selection.selected) {
+            this.onSelectedChange();
+        } else {
+            this.selectedChange.emit(this._selected);
+        }
     }
 
     @Output("clrTreeNodeSelectedChange") selectedChange: EventEmitter<boolean>
@@ -98,9 +102,9 @@ export class TreeNode implements AfterContentInit {
     }
 
     onSelectedChange(): void {
-        this.selected = !this.selected;
-        this.selectedChange.emit(this.selected);
-        this.selection.updateSelectedState(this.selected);
+        this._selected = !this.selection.selected;
+        this.selection.toggleState(this._selected);
+        this.selectedChange.emit(this._selected);
     }
 
     populateTreeSelectionProvider(): void {

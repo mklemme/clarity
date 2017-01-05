@@ -28,10 +28,10 @@ export class TreeSelection {
     constructor( @SkipSelf() @Optional() private parent: TreeSelection) {
     }
 
-    updateSelectedState(selected: boolean,
-                        updateChildren: boolean = true,
-                        updateParent: boolean = true,
-                        indeterminate: boolean = false): void {
+    toggleState(selected: boolean,
+                updateChildren: boolean = true,
+                updateParent: boolean = true,
+                indeterminate: boolean = false): void {
         this._selected = selected;
         this._indeterminate = indeterminate;
 
@@ -46,7 +46,7 @@ export class TreeSelection {
 
     private updateChildrenSelectedState(selected: boolean): void {
         this.children.forEach(function(child) {
-            child.updateSelectedState(selected, true, false, false);
+            child.toggleState(selected, true, false, false);
         });
     }
 
@@ -60,19 +60,19 @@ export class TreeSelection {
         let indeterminate: boolean = siblings[0].indeterminate;
 
         if (indeterminate) {
-            this.parent.updateSelectedState(false, false, true, true);
+            this.parent.toggleState(false, false, true, true);
             return;
         }
 
         for (let i = 1; i < siblings.length; i++) {
             if (siblings[i].indeterminate) {
-                this.parent.updateSelectedState(false, false, true, true);
+                this.parent.toggleState(false, false, true, true);
                 return;
             } else if (siblings[i].selected !== state) {
-                this.parent.updateSelectedState(false, false, true, true);
+                this.parent.toggleState(false, false, true, true);
                 return;
             }
         }
-        this.parent.updateSelectedState(state, false, true, false);
+        this.parent.toggleState(state, false, true, false);
     }
 }

@@ -17,10 +17,13 @@
 </span>
 <clr-checkbox
     *ngIf="_isSelectable"
-    [ngModel]="selected"
+    [ngModel]="selection.selected"
     (ngModelChange)="onSelectedChange()"
-    [clrIndeterminate]="_selectionIndeterminate"></clr-checkbox>
+    [clrIndeterminate]="selection.indeterminate"></clr-checkbox>
 <ng-content></ng-content>
+<span><b>Selected:</b> {{selected}}</span>
+<span><b>Selection.Selected:</b> {{selection.selected}}</span>
+<span><b>Selection.Indeterminate: </b> {{selection.indeterminate}}</span>
 <!-- FIXME: remove this string concatenation when boolean states are supported -->
 <div
     class="clr-tree-node-children"
