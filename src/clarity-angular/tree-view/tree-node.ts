@@ -5,7 +5,6 @@
  */
 
 import {
-    AfterContentInit,
     Component,
     ContentChildren,
     EventEmitter,
@@ -17,104 +16,89 @@ import {
     trigger
 } from "@angular/core";
 
-import {TreeView} from "./tree-view";
-
-import {TreeSelection} from "./providers/selection.service";
-
 import {collapse} from "../animations/collapse/index";
+import {AbstractTreeSelection} from "./abstract-tree-selection";
+import {TreeSelection} from "./tree-selection";
+import {TreeView} from "./tree-view";
 
 @Component({
     selector: "clr-tree-node",
     templateUrl: "./tree-node.html",
-    animations: [trigger("collapse", collapse())],
-    providers: [TreeSelection]
+    animations: [trigger("collapse", collapse())]
 })
-export class TreeNode implements AfterContentInit {
-    @ContentChildren(TreeNode) childNodes: QueryList<TreeNode>;
+export class TreeNode extends AbstractTreeSelection {
 
-    @Input("clrTreeModel") treeModel: any;
+    constructor(@Optional() @SkipSelf() parent: TreeNode,
+                @Optional() private _tree: TreeView) {
+        super(parent);
+    }
+
+    @Input("clrTreeModel") model: any;
+
+    @ContentChildren(TreeNode) _children: QueryList<TreeNode>;
+
+    /**
+     * Generates the child TreeNodes array from the ContentChildren QueryList
+     * @returns {TreeNode[]|Array}
+     */
+    get children(): AbstractTreeSelection[] {
+        return this._children ? this._children.toArray() : [];
+    }
+
+    @Input("clrTreeSelected") selection: TreeSelection;
+    @Output("clrTreeSelectedChange") selectionChange = new EventEmitter<TreeSelection>(false);
+
+    /**
+     * Returns true if a TreeNode contains child TreeNodes and false otherwise.
+     * @returns {boolean}
+     */
+    public get hasChildren(): boolean {
+        //Comparing with 1 because @ContentChildren registers itself if the child and parent type is the same
+        if (this.children && this.children.length > 1) {
+            return true;
+        }
+        return false;
+    }
 
     @Input("clrTreeNodeExpanded") expanded = false;
     @Output("clrTreeNodeExpandedChange") expandedChange: EventEmitter<boolean>
         = new EventEmitter<boolean>(false);
 
+    /**
+     * Determines the caret direction based on the expanded/collapsed
+     * state of the TreeNode.
+     *
+     * Returns "down" when collapsed and "right" when expanded
+     * @returns {string|string}
+     */
+    public get caretDirection(): string {
+        return (this.expanded) ? "down" : "right";
+    }
+
     @Input("clrTreeNodeExpandable") isExpandable = false;
     @Input("clrTreeNodeLoading") loading = false;
 
-    private _selected: boolean = false;
-
-    public get selected(): boolean {
-        this._selected = this.selection.selected;
-        return this.selection.selected;
-    }
-
-    @Input("clrTreeNodeSelected")
-    public set selected(value: boolean) {
-        this._selected = value;
-        if (this._selected !== this.selection.selected) {
-            this.onSelectedChange();
-        } else {
-            this.selectedChange.emit(this._selected);
-        }
-    }
-
-    @Output("clrTreeNodeSelectedChange") selectedChange: EventEmitter<boolean>
-        = new EventEmitter<boolean>(false);
-
-    private _isSelectable: boolean = false;
-
-    constructor( @Optional() private tree: TreeView,
-                 @SkipSelf() @Optional() private parent: TreeNode,
-                 private selection: TreeSelection) {
-    }
-
-    hasChildren: boolean = false;
-    caretDirection: string = this.expanded ? "down" : "right";
-
-    toggleCollapse(): void {
+    /**
+     * Clicking on the caret sign calls this method.
+     * Toggles the expanded/collpased state of the TreeNode
+     */
+    toggleExpand(): void {
         this.expanded = !this.expanded;
-        this.toggleDirection();
         this.expandedChange.emit(this.expanded);
     }
 
-    toggleDirection(): void {
-        this.caretDirection = this.expanded ? "down" : "right";
-    }
-
-    ngAfterContentInit() {
-        if (this.tree && this.tree.isSelectable) {
-            this._isSelectable = true;
-        }
-        this.hasChildren = this.treeNodeHasChildren();
-        this.selection.model = this.treeModel;
-        if (this._isSelectable) {
-            this.populateTreeSelectionProvider();
-        }
-    }
-
-    treeNodeHasChildren(): boolean {
-        //Since @ContentChildren registers itself as a child too,
-        //we check for length > 1 instead of 0
-        if (this.childNodes.length > 1) {
+    get selectable(): boolean {
+        if (this._tree && this._tree.isSelectable) {
             return true;
         }
         return false;
     }
 
     onSelectedChange(): void {
-        this._selected = !this.selection.selected;
-        this.selection.toggleState(this._selected);
-        this.selectedChange.emit(this._selected);
-    }
-
-    populateTreeSelectionProvider(): void {
-        this.selection.model = this.treeModel;
-        if (this.hasChildren) {
-            this.childNodes.forEach(function(child: TreeNode) {
-                if (child !== this) {
-                    this.selection.children.push(child.selection);
-                }
-            }.bind(this));
+        this.selected = !this.selected;
+        this.children.forEach(child => child.parentChanged(this.selected));
+        if (this.parent) {
+            this.parent.childChanged();
         }
     }
 }

@@ -5,7 +5,7 @@
   -->
 <button
     class="clr-tree-node-caret"
-    (click)="toggleCollapse()"
+    (click)="toggleExpand()"
     *ngIf="(isExpandable || hasChildren) && (!loading)">
     <clr-icon
         shape="caret"
@@ -16,14 +16,14 @@
     Loading...
 </span>
 <clr-checkbox
-    *ngIf="_isSelectable"
-    [ngModel]="selection.selected"
+    *ngIf="selectable"
+    [ngModel]="selected"
     (ngModelChange)="onSelectedChange()"
-    [clrIndeterminate]="selection.indeterminate"></clr-checkbox>
+    [clrIndeterminate]="indeterminate"></clr-checkbox>
 <ng-content></ng-content>
-<span><b>Selected:</b> {{selected}}</span>
+<!--span><b>Selected:</b> {{selected}}</span>
 <span><b>Selection.Selected:</b> {{selection.selected}}</span>
-<span><b>Selection.Indeterminate: </b> {{selection.indeterminate}}</span>
+<span><b>Selection.Indeterminate: </b> {{selection.indeterminate}}</span-->
 <!-- FIXME: remove this string concatenation when boolean states are supported -->
 <div
     class="clr-tree-node-children"
