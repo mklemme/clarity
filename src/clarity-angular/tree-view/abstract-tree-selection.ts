@@ -23,9 +23,14 @@ export abstract class AbstractTreeSelection {
     public get selected(): boolean {
         return this._selected;
     }
+
     public set selected(value: boolean) {
         this._selected = value;
         this._indeterminate = false;
+        this.children.forEach(child => child.parentChanged(value));
+        if(this.parent) {
+            this.parent.childChanged();
+        }
     }
 
     public get indeterminate(): boolean {

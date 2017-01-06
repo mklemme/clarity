@@ -94,11 +94,12 @@ export class TreeNode extends AbstractTreeSelection {
         return false;
     }
 
+    /*
     onSelectedChange(): void {
         this.selected = !this.selected;
         this.children.forEach(child => child.parentChanged(this.selected));
         if (this.parent) {
             this.parent.childChanged();
         }
-    }
+    }*/
 }

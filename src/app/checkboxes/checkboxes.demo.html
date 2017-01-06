@@ -48,14 +48,15 @@
         <div class="form-group">
             <label>Indetermiante Checkbox</label>
             <div class="checkbox-inline">
-                <clr-checkbox type="checkbox" id="checkbox_9" [clrIndeterminate]="indeterminateState">
-                    <div (click)="onToggleIndeterminateState($event)">
-                        Toggle Indeterminate State
-                    </div>
-                    <div>
-                        NOTE: Native checkbox elements must set indeterminate state with JavaScript.
-                    </div>
+                <clr-checkbox type="checkbox" id="checkbox_9" [clrIndeterminate]="indeterminateState" (clrIndeterminateChange)="onChange($event)">
+                    Indeterminate Checkbox
                 </clr-checkbox>
+                <button (click)="onToggleIndeterminateState($event)" type="button">
+                    Toggle Indeterminate State
+                </button>
+                <div>
+                    NOTE: Native checkbox elements must set indeterminate state with JavaScript.
+                </div>
             </div>
         </div>
     </section>

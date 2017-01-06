@@ -17,8 +17,8 @@
 </span>
 <clr-checkbox
     *ngIf="selectable"
-    [ngModel]="selected"
-    (ngModelChange)="onSelectedChange()"
+    [(ngModel)]="selected"
+
     [clrIndeterminate]="indeterminate"></clr-checkbox>
 <ng-content></ng-content>
 <!--span><b>Selected:</b> {{selected}}</span>
