@@ -60,7 +60,6 @@ export class Checkbox implements ControlValueAccessor {
         if (value !== this._checked) {
             this.indeterminate = false;
             this._checked = value;
-            this.onChangeCallback(this.checked);
             this.change.emit(this.checked);
         }
     }
@@ -88,16 +87,15 @@ export class Checkbox implements ControlValueAccessor {
 
     public toggle() {
         this.checked = !this.checked;
+        this.onChangeCallback(this.checked);
     }
 
     writeValue(value: any): void {
-        if (value !== this._checked) {
-            this._checked = value;
-            this.change.emit(this.checked);
+        if (value === null) {
+            value = false;
         }
-        if (this._indeterminate !== false) {
-            this._indeterminate = value;
-            this.indeterminateChange.emit(this._indeterminate);
+        if (value !== this.checked) {
+            this.checked = value;
         }
     }
 

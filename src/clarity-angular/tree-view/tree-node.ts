@@ -42,7 +42,7 @@ export class TreeNode extends AbstractTreeSelection {
      * @returns {TreeNode[]|Array}
      */
     get children(): AbstractTreeSelection[] {
-        return this._children ? this._children.toArray() : [];
+        return this._children ? this._children.toArray().filter(child => this !== child) : [];
     }
 
     @Input("clrTreeSelected") selection: TreeSelection;
@@ -53,8 +53,7 @@ export class TreeNode extends AbstractTreeSelection {
      * @returns {boolean}
      */
     public get hasChildren(): boolean {
-        //Comparing with 1 because @ContentChildren registers itself if the child and parent type is the same
-        if (this.children && this.children.length > 1) {
+        if (this.children && this.children.length > 0) {
             return true;
         }
         return false;
@@ -93,13 +92,4 @@ export class TreeNode extends AbstractTreeSelection {
         }
         return false;
     }
-
-    /*
-    onSelectedChange(): void {
-        this.selected = !this.selected;
-        this.children.forEach(child => child.parentChanged(this.selected));
-        if (this.parent) {
-            this.parent.childChanged();
-        }
-    }*/
 }

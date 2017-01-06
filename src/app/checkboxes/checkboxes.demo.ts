@@ -22,7 +22,6 @@ export class CheckboxesDemo {
     }
 
     onChange(value: boolean): void {
-        console.log("onChange value received: "+ value);
         this.indeterminateState = value;
     }
 }

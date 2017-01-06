@@ -28,7 +28,7 @@ export abstract class AbstractTreeSelection {
         this._selected = value;
         this._indeterminate = false;
         this.children.forEach(child => child.parentChanged(value));
-        if(this.parent) {
+        if (this.parent) {
             this.parent.childChanged();
         }
     }
